@@ -1,0 +1,10 @@
+!!!
+%html
+  = render(partial: 'layouts/partials/head')
+  %body
+    .container
+      = render(partial: 'layouts/partials/navigation')
+      .jumbotron
+        = yield
+
+-#= title

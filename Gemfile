@@ -6,6 +6,8 @@ ruby '2.3.0'
 gem 'rails', '5.0.0'
 # Use Postgres as the database for Active Record
 gem 'pg'
+
+gem 'puma'
 # Use SCSS for stylesheets
 gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
@@ -16,6 +18,24 @@ gem 'coffee-rails'
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
+
+gem 'haml-rails'
+
+gem 'bootstrap-sass'
+
+gem 'cancancan'
+
+gem 'devise'
+
+gem 'responders'
+
+gem 'simple_form'
+
+gem 'wicked'
+
+gem 'cocoon'
+
+gem 'email_validator'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
