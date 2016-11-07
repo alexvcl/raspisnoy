@@ -1,0 +1,13 @@
+%h3 Point Rewards Settings
+= simple_form_for(@settings, url: wizard_path(:points_settings), method: :put) do |f|
+  = f.input :common
+  = f.input :trumpless
+  = f.input :dark
+  = f.input :minimality
+  = f.input :golden
+  = f.input :fold_reward
+  = f.input :over_defence_reward
+  = f.input :shortage_penalty
+  = f.submit
+
+= link_to('Previous step', previous_wizard_path)

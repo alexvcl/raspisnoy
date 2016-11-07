@@ -1,4 +1,6 @@
 %h3 Players
-= simple_form_for(@players_batch, url: wizard_path(:players), method: :put) do |f|
-  = f.simple_fields_for :players do |player|
-    = player.input :name
+= simple_form_for(@game, url: wizard_path(:players), method: :put) do |f|
+  = f.association :players, as: :multi_select
+  = f.submit
+
+-#= link_to('Next step', next_wizard_path)

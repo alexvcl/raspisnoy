@@ -1,4 +1,8 @@
 class Setting < ApplicationRecord
+  serialize :trick_rewards, HashWithIndifferentAccess
+  store_accessor :trick_rewards, :common, :trumpless, :dark, :minimality, :golden
+
+  #todo trick_rewards keys postfix (_trick_reward)
 
   belongs_to :game
 
@@ -13,7 +17,7 @@ class Setting < ApplicationRecord
         'dark': 10,
         'minimality': -10,
         'golden': 20
-      }
+      }.with_indifferent_access
       self.fold_reward         = 5
       self.over_defence_reward = 1
       self.shortage_penalty    = 10

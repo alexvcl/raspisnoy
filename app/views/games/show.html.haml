@@ -1,1 +1,7 @@
-
+%h3= @game.name
+%p Status: #{@game.status}
+- if @game.setup_done?
+  = link_to('Start game', start_game_path(@game), method: :post, class: 'btn btn-success')
+- elsif @game.in_progress?
+  %p Current Round: #{@game.current_round.format_type}
+  %p Cards Served: #{@game.current_round.cards_served}

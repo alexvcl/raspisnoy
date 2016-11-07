@@ -1,4 +1,6 @@
 class Round < ApplicationRecord
+  enum status: [:not_started, :in_progress, :completed]
+
   enum format_type: [:common, :trumpless, :dark, :minimality, :golden]
   enum trump:       [:heart, :diamond, :club, :spade]
 

@@ -4,7 +4,8 @@ class Auth::RegistrationsController < Devise::RegistrationsController
   protected
 
     def after_sign_up_path_for(resource)
-      stored_location_for(resource) || root_path
+      # stored_location_for(resource) || root_path
+      root_path
     end
 
     # def after_update_path_for(resource)

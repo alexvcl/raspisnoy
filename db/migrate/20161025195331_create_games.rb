@@ -1,13 +1,12 @@
 class CreateGames < ActiveRecord::Migration[5.0]
   def change
     create_table :games do |t|
-      t.references :user
+      t.references :current_round
 
-      t.string :description, null: false, default: ''
+      t.integer :status,      null: false, default: 0
+      t.string  :description, null: false, default: ''
 
       t.timestamps
     end
-
-    add_foreign_key :games, :users
   end
 end

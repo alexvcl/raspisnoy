@@ -26,8 +26,10 @@ module Raspisnoy
     config.assets.enabled = true
     config.assets.digest = true
 
+    # Precompile additional assets
     config.assets.precompile += %w(
       *.png *.jpg *.jpeg *.gif
+      application.js
       application.css
     )
 

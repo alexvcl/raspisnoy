@@ -1,7 +1,7 @@
 class CreateSettings < ActiveRecord::Migration[5.0]
   def change
     create_table :settings do |t|
-      t.references :game
+      t.belongs_to :game, index: true
 
       t.json :trick_rewards, null: false, default: {}
 
@@ -11,7 +11,5 @@ class CreateSettings < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-
-    add_foreign_key :settings, :games
   end
 end

@@ -31,6 +31,8 @@ gem 'responders'
 
 gem 'simple_form'
 
+gem 'kaminari'
+
 gem 'wicked'
 
 gem 'cocoon'

@@ -10,7 +10,7 @@ namespace :app do
     Rake::Task['db:create'].execute
     Rake::Task['db:migrate'].execute
     Rake::Task['db:seed'].execute
-    # Rake::Task['demo:seed'].execute
+    Rake::Task['demo:seed'].execute
   end
 
 end

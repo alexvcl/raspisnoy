@@ -14,4 +14,9 @@
 #= require jquery_ujs
 #= require turbolinks
 #= require cocoon
-#= require_tree .
+
+#= require_tree ./plugins
+#= require_tree ./core
+
+Raspisnoy.app = new Raspisnoy.Application
+Raspisnoy.app.start()
