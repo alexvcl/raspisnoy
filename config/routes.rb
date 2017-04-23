@@ -9,14 +9,24 @@ Rails.application.routes.draw do
   #   passwords:     'auth/passwords'
   # }
 
-  devise_for :players
+  devise_for :users
 
-  devise_scope :player do
+  devise_scope :user do
     root            to: 'games#index'
   end
 
-  resources :games, only: [:index, :new, :create, :show] do
+  resources :players, only: [:index]
+  resources :games, only: [:index, :new, :create, :show, :current_round] do
+    get :current_round, on: :member
     resources :wizard
+    resources :rounds, only: [:show, :betting, :set_orders, :proceed_scores, :set_tricks] do
+      member do
+       get :betting
+       put :set_orders
+       get :proceed_scores
+       put :set_tricks
+      end
+    end
 
     post :start, on: :member
   end

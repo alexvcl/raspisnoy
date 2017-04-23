@@ -1,6 +1,6 @@
-class AddDeviseToPlayers < ActiveRecord::Migration[5.0]
+class DeviseUsers < ActiveRecord::Migration[5.0]
   def self.up
-    create_table :players do |t|
+    create_table :users do |t|
 
       ## Database authenticatable
       t.string :email,              null: false, default: ''
@@ -32,8 +32,6 @@ class AddDeviseToPlayers < ActiveRecord::Migration[5.0]
       # t.datetime :locked_at
 
       # Custom attributes
-      t.string :name, null: false, default: ''
-
       t.boolean :is_active,         null: false, default: true
       t.boolean :is_admin,          null: false, default: false
       # t.boolean :tos_agreement, null: false, default: false
@@ -44,8 +42,8 @@ class AddDeviseToPlayers < ActiveRecord::Migration[5.0]
     # add_foreign_key :players, :games
     # add_foreign_key :players, :players_batches
 
-    add_index :players, :email,                unique: true
-    add_index :players, :reset_password_token, unique: true
+    add_index :users, :email,                unique: true
+    add_index :users, :reset_password_token, unique: true
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
   end

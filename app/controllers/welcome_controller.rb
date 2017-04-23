@@ -1,4 +1,4 @@
-class WelcomeController < LoggedPlayerController
+class WelcomeController < LoggedUserController
   skip_load_and_authorize_resource
 
   def index

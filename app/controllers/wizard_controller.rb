@@ -1,4 +1,4 @@
-class WizardController < LoggedPlayerController
+class WizardController < LoggedUserController
   include Wicked::Wizard
 
   skip_load_and_authorize_resource
@@ -55,7 +55,8 @@ class WizardController < LoggedPlayerController
         :golden,
         :fold_reward,
         :over_defence_reward,
-        :shortage_penalty
+        :shortage_penalty,
+        :dark_penalty
       )
     end
 

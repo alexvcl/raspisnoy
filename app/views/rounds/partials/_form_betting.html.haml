@@ -1,0 +1,7 @@
+= simple_form_for(round, method: :put, url: set_orders_game_round_path(game, round)) do |r|
+  = r.input :trump, include_blank: false, as: :chosen,
+                    collection: Round.trumps.keys.map, checked: Round.trumps[r.object.trump]
+  = r.simple_fields_for :bids do |b|
+    = b.association :player, as: :hidden
+    = b.input :ordered, label: [b.object.player_name + "'s", 'order'].join(' ')
+  = primary_button(r)

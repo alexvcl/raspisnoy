@@ -7,6 +7,7 @@ class CreateRounds < ActiveRecord::Migration[5.0]
       t.integer :format_type,  null: false, default: 0
       t.integer :trump,        null: false, default: 0
       t.integer :cards_served, null: false, default: 1
+      t.integer :weight,       null: false, default: 0
 
       t.timestamps
     end

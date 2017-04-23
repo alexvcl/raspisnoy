@@ -1,3 +1,5 @@
+require "application_responder"
+
 require 'application_responder'
 
 class ApplicationController < ActionController::Base
@@ -11,14 +13,25 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  after_action :prevent_browser_cache
+
+  rescue_from CanCan::AccessDenied do
+    redirect_to games_path, alert: 'You are not authorized to access this page'
+  end
+
   def current_ability
-    @current_ability ||= Ability.new(current_player)
+    @current_ability ||= Ability.new(current_user)
   end
 
   protected
 
+    def prevent_browser_cache
+      response.headers['Cache-Control'] = 'no-cache, no-store, max-age=0, must-revalidate'
+      response.headers['Pragma']        = 'no-cache'
+    end
+
     def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:email])
     end
 
 end

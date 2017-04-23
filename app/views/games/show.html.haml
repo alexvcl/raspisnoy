@@ -5,3 +5,4 @@
 - elsif @game.in_progress?
   %p Current Round: #{@game.current_round.format_type}
   %p Cards Served: #{@game.current_round.cards_served}
+  = link_to('Continue', current_round_game_path(@game), class: 'btn btn-info')

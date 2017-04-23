@@ -1,18 +1,21 @@
-class GamesController < LoggedPlayerController
+class GamesController < LoggedUserController
 
   def new
     @game = Game.new
   end
 
   def create
-    @game = Game.new
-    @game = Game.create(game_params)
+    @game = current_user.games.create(game_params)
     respond_with @game, location: -> { game_wizard_index_path(@game, :players) }
   end
 
   def start
-    @game.start_first_round
-    redirect_to(game_path(@game))
+    @game.start!
+    redirect_to(game_round_path(@game, @game.current_round))
+  end
+
+  def current_round
+    redirect_to game_round_path(@game, @game.current_round)
   end
 
   private

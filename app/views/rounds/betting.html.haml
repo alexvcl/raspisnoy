@@ -1,0 +1,3 @@
+= render({partial: 'rounds/partials/dashboard', locals: {round: @round}})
+= render({partial: 'rounds/partials/form_betting', locals: {game: @game, round: @round}})
+= render(partial: 'games/partials/results_table', locals: {game: @game, round: @round})

@@ -1,0 +1,20 @@
+%h5= @game.name
+%p
+  Round status:
+  %strong= @round.status
+%p
+  Cards served:
+  %strong= @round.cards_served
+%p
+  Format:
+  %strong= @round.format_type
+%p
+  Trump:
+  = trump_colored(@round)
+
+- if round.bids.map(&:persisted?).any?
+  %h5 Players bets:
+  - round.bids.each do |bid|
+    %p
+      %strong= round.tricks_counted? ? [bid.trick, bid.ordered].join('/') : bid.ordered
+      = ['-', bid.player.name].join(' ')

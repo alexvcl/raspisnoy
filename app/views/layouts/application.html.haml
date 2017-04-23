@@ -5,6 +5,7 @@
     .container
       = render(partial: 'layouts/partials/navigation')
       .jumbotron
+        = render(partial: 'layouts/partials/alert', locals: {message: alert}) if alert
         = yield
 
 -#= title

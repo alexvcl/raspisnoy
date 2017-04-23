@@ -5,23 +5,9 @@ namespace :demo do
 
     puts '===================================Start Demo==================================='
 
-    Player.create({
-                  email: 'demo@gmail.com',
-                  password: '123123',
-                  name: 'Memas'
-    })
+    user = User.create(email: 'valet@valet.valet', password: '123123')
 
-    Player.create({
-                      email: 'demo1@gmail.com',
-                      password: '123123',
-                      name: 'Vasya'
-                  })
-
-    Player.create({
-                      email: 'demo2@gmail.com',
-                      password: '123123',
-                      name: 'Petya'
-                  })
+    ['Memas', 'Vasya', 'Petya', 'Walet'].each {|name| Player.create(name: name, user: user)}
 
     puts '===================================End Factories=============================='
 

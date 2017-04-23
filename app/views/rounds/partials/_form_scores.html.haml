@@ -1,0 +1,5 @@
+= simple_form_for(round, method: :put, url: set_tricks_game_round_path(round.game, round)) do |r|
+  = r.simple_fields_for :bids do |b|
+    = b.association :player, as: :hidden
+    = b.input :trick, label: [b.object.player_name + "'s", 'score'].join(' ')
+  = primary_button(r)

@@ -1,0 +1,8 @@
+= render({partial: 'rounds/partials/dashboard', locals: {round: @round}})
+- if @round.in_progress? or (@round.minimality? or @round.golden?)
+  = link_to('Set scores', proceed_scores_game_round_path(@round.game, @round), class: 'btn btn-info') if can?(:proceed_scores, @round)
+- elsif @round.betting? and not(@round.minimality? or @round.golden?)
+  = link_to('Place bets', betting_game_round_path(@game, @game.current_round), class: 'btn btn-info') if can?(:betting, @round)
+- if @round.tricks_counted?
+  = link_to('Continue', current_round_game_path(@game), class: 'btn btn-info')
+= render(partial: 'games/partials/results_table', locals: {game: @game, round: @round})
