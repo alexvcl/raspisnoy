@@ -16,4 +16,8 @@ class Player < ApplicationRecord
     # game.rounds.tricks_counted.
   end
 
+  def successful_tricks_by_game(game)
+    Bid.successful_tricks_by_player(game, self)
+  end
+
 end

@@ -1,17 +1,46 @@
-%nav.navbar.navbar-default
-  .container-fluid
-    .navbar-header
-      %button.navbar-toggle.collapsed{"aria-controls" => "navbar", "aria-expanded" => "false", "data-target" => "#navbar", "data-toggle" => "collapse", :type => "button"}
-        %span.sr-only Toggle navigation
-        %span.icon-bar
-        %span.icon-bar
-        %span.icon-bar
-      = link_to('Raspisnoy', root_path, class: 'navbar-brand')
-    - if user_signed_in?
-      #navbar.navbar-collapse.collapse
-        %ul.nav.navbar-nav
-          %li= link_to('Games', games_path) if can?(:index, Game)
-        %ul.nav.navbar-nav
-          %li= link_to('Players', players_path) if can?(:index, Player)
-        %ul.nav.navbar-nav.navbar-right
-          %li= link_to('Logout', destroy_user_session_path, method: :delete)
+-#%nav.navbar.navbar-default
+-#  .container-fluid
+-#    .navbar-header
+-#      %button.navbar-toggle.collapsed{"aria-controls" => "navbar", "aria-expanded" => "false", "data-target" => "#navbar", "data-toggle" => "collapse", :type => "button"}
+-#        %span.sr-only Toggle navigation
+-#        %span.icon-bar
+-#        %span.icon-bar
+-#        %span.icon-bar
+-#      = link_to('Raspisnoy', root_path, class: 'navbar-brand')
+-#    - if user_signed_in?
+-#      #navbar.navbar-collapse.collapse
+-#        %ul.nav.navbar-nav
+-#          %li= link_to('Games', games_path) if can?(:index, Game)
+-#        %ul.nav.navbar-nav
+-#          %li= link_to('Players', players_path) if can?(:index, Player)
+-#        %ul.nav.navbar-nav.navbar-right
+-#          %li= link_to('Logout', destroy_user_session_path, method: :delete)
+
+%header.bg-white.header.header-md.navbar.navbar-fixed-top-xs.box-shadow
+  .navbar-header.aside-md.dk
+    %a.btn.btn-link.visible-xs
+      %i.fa.fa-bars
+    %a.navbar-brand
+      %span.hidden-nav-xs ♠ raspisnoy
+    %a.btn.btn-link.visible-xs
+      %i.fa.fa-cog
+
+  %ul.nav.navbar-nav.hidden-xs
+    %li
+      %a{href: games_path}
+        %i.i.i-play
+  - if user_signed_in?
+    %ul.nav.navbar-nav.navbar-right.m-n.hidden-xs.nav-user.user
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+          %span.thumb-sm.avatar.pull-left
+            = image_tag('valet.jpg')
+          = current_user.name
+          %b.caret
+        %ul.dropdown-menu.animated.fadeInRight
+          -#%li
+          -#  %span.arrow.top
+          -#  %a{:href => "#"} Settings
+          -#%li.divider
+          %li
+            = link_to('Logout', destroy_user_session_path, method: :delete)

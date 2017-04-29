@@ -1,3 +1,9 @@
-= simple_form_for(@game) do |f|
-  = f.input :description
-  = primary_button(f)
+.col-lg-12
+  %section.panel.panel-default
+    %section.panel-body
+      = simple_form_for(@game) do |f|
+        = f.input :description
+        .line.line-dashed.b-b.line-lg.pull-in
+        .form-group
+          .col-sm-4.col-sm-offset-2
+            = primary_button(f)

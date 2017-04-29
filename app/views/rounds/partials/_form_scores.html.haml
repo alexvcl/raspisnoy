@@ -1,5 +1,12 @@
-= simple_form_for(round, method: :put, url: set_tricks_game_round_path(round.game, round)) do |r|
-  = r.simple_fields_for :bids do |b|
-    = b.association :player, as: :hidden
-    = b.input :trick, label: [b.object.player_name + "'s", 'score'].join(' ')
-  = primary_button(r)
+%section.panel.panel-default
+  %section.panel-body
+    = simple_form_for(round, method: :put, url: set_tricks_game_round_path(round.game, round), wrapper: :horizontal_form_scale) do |r|
+      = r.simple_fields_for :bids do |b|
+        = b.association :player, as: :hidden
+        .line.line-dashed.b-b.line-lg.pull-in
+        = b.input :trick, label: [b.object.player_name + "'s", 'score'].join(' ')
+        - if round.dark?
+          = b.input :dark_penalty, as: :checkbox, label: '☹'
+      .form-group
+        .col-sm-4.col-lg-offset-4
+          = primary_button(r)

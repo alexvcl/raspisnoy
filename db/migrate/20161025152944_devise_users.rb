@@ -32,7 +32,7 @@ class DeviseUsers < ActiveRecord::Migration[5.0]
       # t.datetime :locked_at
 
       # Custom attributes
-      t.boolean :is_active,         null: false, default: true
+      t.string :name,               null: false, default: ''
       t.boolean :is_admin,          null: false, default: false
       # t.boolean :tos_agreement, null: false, default: false
 

@@ -1,20 +1,83 @@
+// Custom blocks
+
+.text-black {
+  color: black;
+}
+
 p {
   font-size: 14px !important;
 }
 
-input.numeric.integer {
-  width: 100px !important;
+input[type="number"] {
+  width: 170px;
 }
 
-input[type="submit"] {
-  width: 80px !important;
-  height: 35px !important;
+input[type=text],
+input[type=email],
+input[type=password] {
+  width: 250px !important;
 }
 
-select.chosen.chosen-select{
-  width: 120px !important;
-}
+//input[type="submit"] {
+//  width: 80px !important;
+//  height: 35px !important;
+//}
 
 .text-red {
   color: red;
+}
+
+.line_wrapper {
+  display: table;
+}
+
+.line_element {
+  display: table-cell;
+}
+
+// Bootstrap/Scale/Vendor ================= //
+
+.form-group {
+  //width: 300px !important;
+}
+
+//.form-group > label {
+//  width: 180px !important;
+//}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+span.select2-selection.select2-selection--single {
+  outline: none;
+}
+
+.line.line-dashed {
+  //margin-top: 0;
+  //margin-bottom: 0;
+}
+
+ul.nav.navbar-nav {
+  cursor: pointer;
+}
+
+.list-group-item {
+  font-size: 14px !important;
+}
+
+.badge {
+  //background-color: dimgray;
+  //font-size: 15px;
+  border-radius: initial;
+}
+
+span.select2.select2-container {
+  //width: 120px !important;
+}
+
+.form-horizontal .checkbox {
+  padding-top: 0;
 }

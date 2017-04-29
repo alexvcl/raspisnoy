@@ -12,10 +12,12 @@ class RoundsController < LoggedUserController
   def set_orders
     @game = @round.game
     if @round.update(round_params)
+    # if @round.save!(round_params)
       @round.in_progress!
       respond_with @round, location: -> { game_round_path(@game, @round) }
     else
-      redirect_to betting_game_round_path(@game, @round), alert: @round.errors.full_messages
+      # redirect_to betting_game_round_path(@game, @round), alert: @round.errors.full_messages
+      redirect_to betting_game_round_path(@game, @round), alert: @round.errors.messages.values
     end
   end
 
@@ -26,6 +28,7 @@ class RoundsController < LoggedUserController
   def set_tricks
     @game = @round.game
     if @round.update(round_params)
+    # if @round.save!(round_params)
       @round.tricks_counted!
       @round.game.next_round!
       @round.add_scores!
@@ -40,7 +43,8 @@ class RoundsController < LoggedUserController
     def round_params
       params.fetch(:round, {}).permit(
         :trump,
-        bids_attributes: [:ordered, :trick, :id, :player_id]
+        :jokers,
+        bids_attributes: [:ordered, :trick, :dark, :dark_penalty, :id, :player_id]
       )
     end
 

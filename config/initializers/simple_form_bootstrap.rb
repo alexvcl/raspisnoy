@@ -4,6 +4,17 @@ SimpleForm.setup do |config|
   config.button_class = 'btn btn-default'
   config.boolean_label_class = nil
 
+  config.wrappers :horizontal_form_scale, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
+    b.use :html5
+    b.use :placeholder
+
+    # b.wrapper tag: 'div', class: 'col-lg-9' do |ba|
+    b.use :label
+    b.use :input, class: 'form-control', wrap_with: { tag: 'div', class: 'col-lg-3'}
+    b.use :error, wrap_with: { tag: 'span', class: 'help-inline' }
+    b.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
+  end
+
   config.wrappers :vertical_form, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
     b.use :placeholder

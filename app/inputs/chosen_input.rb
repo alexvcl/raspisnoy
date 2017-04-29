@@ -1,8 +1,7 @@
 class ChosenInput < SimpleForm::Inputs::CollectionSelectInput
 
-  def input(wrapper_options)
-    input_html_classes << 'chosen-select'
-    super
+  def input_html_classes
+    super.push('select2')
   end
 
 end

@@ -1,19 +1,24 @@
 - scores = {}
 - game.players.each { |player| scores[player] = 0 }
-%table.table
-  %caption Game table
-  %thead
-    %tr
-      %th{style: 'width: 50px;'} #
-      - game.players.each do |player|
-        %th{style: 'width: 50px;'} O
-        %th= player.name
-  %tbody
-    - game.rounds.each do |round|
-      %tr
-        %th{scope: :row}= round_format_letter(round)
-        - game.players.each do |player|
-          - scores[player] += round.trick_score(player).to_i
-          -#%td= [round.ordered(player), "(#{round.trick(player)})"].join(' ') if round.tricks_counted?
-          %td= round.ordered(player)
-          %td= scores[player] if round.tricks_counted?
+
+.col-lg-12
+  %section.panel.panel-default
+    -#%header.panel-heading Game results
+    .table-responsive
+      %table.table.table-striped.b-t.b-light
+        %thead
+          %tr
+            %th{width: 50} #
+            - game.players.each do |player|
+              %th{width: 50} B
+              %th= player.name
+        %tbody
+          - game.rounds.each do |round|
+            %tr
+              %th{scope: :row}= round_format_letter(round)
+              - game.players.each do |player|
+                - scores[player] += round.trick_score(player).to_i
+                -#%td= [round.ordered(player), "(#{round.trick(player)})"].join(' ') if round.tricks_counted?
+                -#%td= [round.ordered(player), (round.dark_for?(player) ? 'd' : '')].join('')
+                %td= round.ordered(player)
+                %td= scores[player] if round.tricks_counted?

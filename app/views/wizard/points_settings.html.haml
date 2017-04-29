@@ -1,14 +1,27 @@
-%h3 Point Rewards Settings
-= simple_form_for(@settings, url: wizard_path(:points_settings), method: :put) do |f|
-  = f.input :common
-  = f.input :trumpless
-  = f.input :dark
-  = f.input :minimality
-  = f.input :golden
-  = f.input :fold_reward
-  = f.input :over_defence_reward
-  = f.input :shortage_penalty
-  = f.input :dark_penalty
-  = primary_button(f)
-
-= link_to('Previous step', previous_wizard_path)
+-#= link_to('Previous step', previous_wizard_path)
+- content_for(:page_header, 'Points distribution settings')
+.col-lg-12
+  %section.panel.panel-default
+    %section.panel-body
+      = simple_form_for(@settings, url: wizard_path(:points_settings), method: :put) do |f|
+        = f.input :common, as: :numeric
+        .line.line-dashed.b-b.line-lg.pull-in
+        = f.input :trumpless, as: :numeric
+        .line.line-dashed.b-b.line-lg.pull-in
+        = f.input :dark, as: :numeric
+        .line.line-dashed.b-b.line-lg.pull-in
+        = f.input :minimality, as: :numeric
+        .line.line-dashed.b-b.line-lg.pull-in
+        = f.input :golden, as: :numeric
+        .line.line-dashed.b-b.line-lg.pull-in
+        = f.input :fold_reward
+        .line.line-dashed.b-b.line-lg.pull-in
+        = f.input :over_defence_reward
+        .line.line-dashed.b-b.line-lg.pull-in
+        = f.input :shortage_penalty
+        .line.line-dashed.b-b.line-lg.pull-in
+        = f.input :dark_penalty
+        .line.line-dashed.b-b.line-lg.pull-in
+        .form-group
+          .col-sm-4.col-sm-offset-2
+            = primary_button(f)

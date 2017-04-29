@@ -2,10 +2,25 @@
 %html
   = render(partial: 'layouts/partials/head')
   %body
-    .container
+    %section.vbox
       = render(partial: 'layouts/partials/navigation')
-      .jumbotron
-        = render(partial: 'layouts/partials/alert', locals: {message: alert}) if alert
-        = yield
+      %section
+        %section.hbox.stretch
+          %section#content
+            %section.vbox
+              %section.scrollable.padder
+                .row
+                  -#.col-sm-4
+                  .col-lg-2
+                  -#.col-sm-8
+                  .col-lg-8
+                    = render(partial: 'layouts/partials/header')
+                    - if alert
+                      .hidden{data: {'class-binder': 'GrowlFlash', 'messages': growl_flash.to_json}}
+                    %section.scrollable.wrapper
+                      .row
+                        = yield
+                  -#.col-sm-4
+                  .col-lg-2
 
 -#= title

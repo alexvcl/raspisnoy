@@ -1,7 +1,15 @@
-= simple_form_for(round, method: :put, url: set_orders_game_round_path(game, round)) do |r|
-  = r.input :trump, include_blank: false, as: :chosen,
-                    collection: Round.trumps.keys.map, checked: Round.trumps[r.object.trump]
-  = r.simple_fields_for :bids do |b|
-    = b.association :player, as: :hidden
-    = b.input :ordered, label: [b.object.player_name + "'s", 'order'].join(' ')
-  = primary_button(r)
+%section.panel.panel-default
+  %section.panel-body
+    = simple_form_for(round, method: :put, url: set_orders_game_round_path(game, round), wrapper: :horizontal_form_scale) do |r|
+      = r.input :trump, include_blank: false, as: :chosen,
+                        collection: Round.trumps.keys.map, checked: Round.trumps[r.object.trump]
+      .line.line-dashed.b-b.line-lg.pull-in
+      = r.simple_fields_for :bids do |b|
+        = b.association :player, as: :hidden
+        = b.input :ordered, label: [b.object.player_name + "'s", 'bid'].join(' ')
+        - if round.common? or round.trumpless?
+          = b.input :dark, label: '⚫', as: :checkbox
+        .line.line-dashed.b-b.line-lg.pull-in
+      .form-group
+        .col-sm-4.col-lg-offset-2
+          = primary_button(r)

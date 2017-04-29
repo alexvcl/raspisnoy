@@ -1,0 +1,7 @@
+%header.header.bg-white.b-b.b-light
+  %p
+    %i.i.i-trashcan
+    - if content_for?(:page_header)
+      = yield(:page_header)
+    - else
+      raspisnoy

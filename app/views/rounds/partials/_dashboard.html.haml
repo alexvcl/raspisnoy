@@ -1,20 +1,33 @@
-%h5= @game.name
-%p
-  Round status:
-  %strong= @round.status
-%p
-  Cards served:
-  %strong= @round.cards_served
-%p
-  Format:
-  %strong= @round.format_type
-%p
-  Trump:
-  = trump_colored(@round)
-
-- if round.bids.map(&:persisted?).any?
-  %h5 Players bets:
-  - round.bids.each do |bid|
-    %p
-      %strong= round.tricks_counted? ? [bid.trick, bid.ordered].join('/') : bid.ordered
-      = ['-', bid.player.name].join(' ')
+- if @game.finished?
+  = render(partial: 'games/partials/winner', locals: {game: @game})
+- else
+  -#todo click to scroll down to current round on the table
+  .row
+    .col-lg-6
+      .panel.panel-default
+        .list-group.no-radius.alt
+          .list-group-item
+            %span.badge= @round.translate_enum(:status)
+            Round status
+          .list-group-item
+            = cards_server_decorated(@round)
+            Cards served
+          .list-group-item
+            = format_colored(@round)
+            Format
+          .list-group-item
+            %span.badge.text-black= trump_decorated(@round)
+            Trump
+    .col-lg-6
+      .panel.panel-default
+        .list-group.no-radius.alt
+          - if round.bids.map(&:persisted?).any?
+            - round.bids.each do |bid|
+              .list-group-item
+                = players_bid(round, bid)
+                = bid.player.name
+          - else
+            .div{data: {'class-binder': 'PlayersTricksChart',
+                        'player-names': @game.players.pluck(:name),
+                        'player-scores': @game.players.map { |p| p.successful_tricks_by_game(@game) } }}
+              %canvas#myChart{height: '156.5', width: 400, style: 'padding-right: 15px'}

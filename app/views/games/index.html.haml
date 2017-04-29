@@ -1,2 +1,4 @@
-= render({partial: 'games/partials/game', collection: @games})
--#todo create game link if no games
+- content_for(:page_header, 'Games')
+.col-lg-12
+  = render({partial: 'games/partials/game', collection: @games}) || content_tag(:p) { 'No games yet ☹' }
+= link_to('New game', new_game_path, class: 'btn btn-primary')

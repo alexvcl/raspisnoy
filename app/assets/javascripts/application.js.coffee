@@ -14,9 +14,13 @@
 #= require jquery_ujs
 #= require turbolinks
 #= require cocoon
+#= require bootstrap-sprockets
+#= require nprogress
+#= require nprogress-turbolinks
 
 #= require_tree ./plugins
 #= require_tree ./core
+#= require_tree ./classes
 
-Raspisnoy.app = new Raspisnoy.Application
-Raspisnoy.app.start()
+Application.app = new Application.Core
+Application.app.start()

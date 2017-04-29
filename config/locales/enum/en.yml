@@ -1,0 +1,18 @@
+en:
+  game:
+    statuses:
+      setup_in_progress: 'Setup in progress'
+      setup_done: 'Setup done'
+      in_progress: 'In progress'
+      finished: 'Finished'
+  round:
+    statuses:
+      betting: 'Betting'
+      in_progress: 'In progress'
+      tricks_counted: 'Tricks counted'
+    format_types:
+      common: 'Common'
+      trumpless: 'Trumpless'
+      dark: 'Dark'
+      minimality: 'Minimality'
+      golden: 'Golden'

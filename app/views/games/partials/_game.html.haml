@@ -1,2 +1,6 @@
-%h3 Games
-= link_to(game.name, game_path(game))
+.col-xs-6.col-sm-4.col-md-3
+  .thumbnail
+    %a{href: game_path(game)}
+      = image_tag('deck.jpg')
+    .caption
+      %p.text-ellipsis.m-b-none= game.description

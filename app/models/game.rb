@@ -1,12 +1,11 @@
 class Game < ApplicationRecord
   enum status: [:setup_in_progress, :setup_done, :in_progress, :finished]
 
-  include CurrentGameConcern
-
   has_and_belongs_to_many :players, after_add: :add_player_dependent_round
 
   has_one :setting
 
+  # has_many :bids
   has_many :rounds, -> { order(weight: :asc) }
   has_many :minimality_rounds, -> { where format_type: Round.format_types['minimality'] }, class_name: 'Round'
   has_many :golden_rounds, -> { where format_type: Round.format_types['golden'] }, class_name: 'Round'
@@ -16,6 +15,8 @@ class Game < ApplicationRecord
 
   belongs_to :user
   belongs_to :current_round, class_name: 'Round', foreign_key: :current_round_id
+
+  accepts_nested_attributes_for :players
 
   scope :by_player, -> (player) { includes(:players).where(players: {id: player.id}) }
 
@@ -32,7 +33,7 @@ class Game < ApplicationRecord
 
   after_create :add_default_rounds
 
-  after_update :add_dependent_round_bids, if: Proc.new { |r| r.status_changed?(from: 'setup_done', to: 'in_progress') }
+  after_update :add_dependent_round_bids, if: Proc.new { |g| g.status_changed?(from: 'setup_done', to: 'in_progress') }
 
   def name
     description || l(created_at)
@@ -44,7 +45,30 @@ class Game < ApplicationRecord
   end
 
   def next_round!
-    update_attribute(:current_round, rounds.where("id > ?", current_round.id).first)
+    return if finished?
+    next_round = rounds.where('id > ?', current_round.id).first
+    if next_round.present?
+      update_attribute(:current_round, rounds.where('id > ?', current_round.id).first)
+    else
+      finished!
+    end
+  end
+
+  def rounds_complete?
+    rounds.pluck(:status).map! {|s| s == 'tricks_counted'}.all?
+  end
+
+  def who_is_the_winner
+    return unless rounds_complete?
+    scores = {}
+    players.each do |player|
+      scores[player] = score_by(player)
+    end
+    scores.key(scores.values.max)
+  end
+
+  def score_by(player)
+    player.scores.joins(:round).where(rounds: {game_id: 1}).sum(:points)
   end
 
   private
@@ -54,12 +78,16 @@ class Game < ApplicationRecord
     end
 
     def add_player_dependent_round(player)
+      return unless persisted?
+
       rounds.create({format_type: :common, cards_served: 9, weight: 9})
-      rounds.create({format_type: :minimality, cards_served: 9, weight: 35})
-      rounds.create({format_type: :golden, cards_served: 9, weight: 40})
+      rounds.create({format_type: :minimality, status: :in_progress, cards_served: 9, weight: 35})
+      rounds.create({format_type: :golden,  status: :in_progress, cards_served: 9, weight: 40})
     end
 
     def add_dependent_round_bids
+      return unless players and persisted?
+
       minimality_rounds.each do |round|
         players.each {|player| round.bids.create({player: player, ordered: 0}) }
       end

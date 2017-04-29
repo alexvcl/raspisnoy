@@ -1,10 +1,12 @@
 class Round < ApplicationRecord
+  include RoundRewardsConcern
+
   enum status: [:betting, :in_progress, :tricks_counted]
 
   enum format_type: [:common, :trumpless, :dark, :minimality, :golden]
   enum trump:       ['♥ heart', '♦ diamond', '♣ club', '♠ spade']
 
-  attr_accessor :orders_sum
+  attr_accessor :jokers
 
   belongs_to :game
 
@@ -19,29 +21,19 @@ class Round < ApplicationRecord
   validates :cards_served, presence: true
   validates :cards_served, length: { in: 1..9 }
 
+  validates :jokers, length: {in: 0..2}
+
   validate :allowed_bids_count
   validate :allowed_orders, unless: 'minimality? or golden?' #, if: Proc.new { |r| r.status_changed?(from: 'betting', to: 'in_progress') }
+  validate :allowed_order_by_bid, if: :betting?
+  validate :orders_positive, if: :betting?
 
   # validate :tricks_integrity, if: Proc.new { |r| r.status_changed?(from: 'in_progress', to: 'tricks_counted') && bids.map(&:changed?).any? }
   validate :tricks_integrity, unless: Proc.new { |r| r.bids.map(&:trick).inject(:+).to_i.zero? }
 
   #todo status changes chain validation ?
-
-  def trick_reward
-    setting.send(format_type)
-    #todo no setting exception
-  end
-
-  def fold_reward
-    setting.fold_reward
-  end
-
-  def over_defence_reward
-    setting.over_defence_reward
-  end
-
-  def shortage_penalty
-    setting.shortage_penalty
+  def jokers
+    @jokers || []
   end
 
   def add_scores!
@@ -51,18 +43,24 @@ class Round < ApplicationRecord
   end
 
   def ordered(player)
-    return '' unless (in_progress? or tricks_counted?) or player
+    return '' if betting? or (not player)
     bids.where(player_id: player.id).first.andand.ordered
   end
 
   def trick(player)
-    return '' unless tricks_counted? or player
+    return '' unless tricks_counted? and player
     bids.where(player_id: player.id).first.andand.trick
   end
 
   def trick_score(player)
-    return '' unless tricks_counted? or player
+    return '' unless tricks_counted? and player
     scores.where(player_id: player.id).first.andand.points
+  end
+
+  def dark_for?(player)
+    # return false unless (in_progress? and dark?) and player
+    return false unless (common? or trumpless?) and (in_progress? or tricks_counted?) and player
+    bids.where(player_id: player.id).first.andand.dark?
   end
 
   private
@@ -85,6 +83,18 @@ class Round < ApplicationRecord
       puts format_type
       puts bids.map(&:ordered).inject(:+)
       errors.add(:bids, 'orders sum cannot equal served cards count') if bids.map(&:ordered).inject(:+) == cards_served
+    end
+
+    def orders_positive
+      bids.each do |bid|
+        errors.add(:bids, "#{bid.player.name} ty ahuel?") if bid.ordered < 0
+      end
+    end
+
+    def allowed_order_by_bid
+      bids.each do |bid|
+        errors.add(:bids, "#{bid.player.name} ty ahuel?") if bid.ordered > cards_served
+      end
     end
 
     def add_bids

@@ -1,8 +1,20 @@
-%h3= @game.name
-%p Status: #{@game.status}
-- if @game.setup_done?
-  = link_to('Start game', start_game_path(@game), method: :post, class: 'btn btn-success')
-- elsif @game.in_progress?
-  %p Current Round: #{@game.current_round.format_type}
-  %p Cards Served: #{@game.current_round.cards_served}
-  = link_to('Continue', current_round_game_path(@game), class: 'btn btn-info')
+- content_for(:page_header, @game.name)
+.col-lg-6
+  .list-group.no-radius.alt
+    .list-group-item
+      %span.badge= @game.translate_enum(:status)
+      Status
+    - if @game.in_progress?
+      .list-group-item
+        = format_colored(@game.current_round)
+        Current Round
+      .list-group-item
+        = cards_server_decorated(@game.current_round)
+        Cards Served
+
+  - if @game.setup_done?
+    = link_to('Start game', start_game_path(@game), method: :post, class: 'btn btn-success')
+  - elsif @game.setup_in_progress?
+    = game_continue_setup(@game)
+  - elsif @game.in_progress?
+    = link_to('Continue', current_round_game_path(@game), class: 'btn btn-info')

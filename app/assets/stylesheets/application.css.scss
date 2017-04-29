@@ -11,9 +11,13 @@
  * file per style scope.
  *
  *= require_self
- *= require_tree ./vendor
+ *= require_tree      ./vendor
+ *= require_directory ./common
+ *= require_directory ./global
  *= require_directory ./override
  */
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "nprogress";
+@import "nprogress-bootstrap";

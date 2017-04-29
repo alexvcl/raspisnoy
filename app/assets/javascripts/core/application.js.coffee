@@ -1,7 +1,7 @@
-window.Raspisnoy         ||= {}
-window.Raspisnoy.Classes ||= {}
+window.Application         ||= {}
+window.Application.Classes ||= {}
 
-class Raspisnoy.Application
+class Application.Core
 
   start: ->
 #    NProgress.configure({'showSpinner': false})
@@ -10,6 +10,8 @@ class Raspisnoy.Application
       @initializeAllPlugins()
       @bindClasses()
 
+      @disableNumericValueScroll()
+
   initializeAllPlugins: =>
     @initializeSelect2()
 
@@ -17,8 +19,20 @@ class Raspisnoy.Application
     $parent.find("[data-class-binder]").each (k, el) =>
       for index, className of $(el).data("classBinder").split(" ")
         unless $(el).hasClass(className)
-          new StaplePulse.Classes[className]($(el))
+          new Application.Classes[className]($(el))
           $(el).addClass(className)
 
   initializeSelect2: ->
-    $('.select2').select2()
+    if location.pathname.includes?('players')
+      $('.select2').select2(width: '60%')
+    else
+      $('.select2').select2(
+  #      height: '60'
+        width: '170'
+  #      containerCssClass: ':all:'
+        minimumResultsForSearch: Infinity
+      )
+
+  disableNumericValueScroll: ->
+    $(':input[type=number]').on 'mousewheel', (e) ->
+      $(this).blur()
