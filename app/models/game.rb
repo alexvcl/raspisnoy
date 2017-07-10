@@ -1,17 +1,13 @@
 class Game < ApplicationRecord
   enum status: [:setup_in_progress, :setup_done, :in_progress, :finished]
 
-  has_and_belongs_to_many :players, after_add: :add_player_dependent_round
+  has_and_belongs_to_many :players, -> { order(id: :asc) }, after_add: :add_player_dependent_round
 
   has_one :setting
 
-  # has_many :bids
   has_many :rounds,            -> { order(weight: :asc, created_at: :asc) }, dependent: :destroy
   has_many :minimality_rounds, -> { where format_type: Round.format_types['minimality'] }, class_name: 'Round'
   has_many :golden_rounds,     -> { where format_type: Round.format_types['golden'] }, class_name: 'Round'
-    # "CASE
-    #   WHEN cards_served = '1'::integer THEN '1'
-    # END"
 
   belongs_to :user, inverse_of: :games
   belongs_to :current_round, class_name: 'Round', foreign_key: :current_round_id
@@ -22,8 +18,8 @@ class Game < ApplicationRecord
 
   before_validation :add_setting, on: :create
 
-  # validates :players, presence: true
-  # validates :players, length: {in: 1..4}, if: Proc.new { |game| game.players.any? }
+  validates :description, presence: true
+  validates :players, length: {in: 2..4}, if: Proc.new { |game| game.description.present? and setup_in_progress? }, on: :update
 
   with_options if: :setup_done? do |game|
     game.validates :setting, presence: true
@@ -65,10 +61,6 @@ class Game < ApplicationRecord
   def who_is_the_winner
     return unless rounds_complete?
     scores = {}
-
-    puts '============='
-    puts players.joins([:scores, :rounds]).where(rounds: {game_id: game.id}).select('SUM(scores.points)')
-    puts '============='
 
     players.each do |player|
       scores[player] = score_by(player)
@@ -116,8 +108,8 @@ class Game < ApplicationRecord
       rounds.each do |round|
         round.update_attribute(:dealer, current_dealer)
 
-        if players.where("id > ?", current_dealer.id).first.present?
-          current_dealer = players.where("id > ?", current_dealer.id).first
+        if players.where('id > ?', current_dealer.id).first.present?
+          current_dealer = players.where('id > ?', current_dealer.id).first
         else
           current_dealer = players.first
         end 

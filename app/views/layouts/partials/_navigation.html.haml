@@ -35,12 +35,12 @@
         %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
           %span.thumb-sm.avatar.pull-left
             = image_tag('valet.jpg')
-          = current_user.name
+          = user.name
           %b.caret
         %ul.dropdown-menu.animated.fadeInRight
-          -#%li
-          -#  %span.arrow.top
-          -#  %a{:href => "#"} Settings
-          -#%li.divider
+          %li
+            -#%span.arrow.top
+            = link_to('Players', user_players_path(user), method: :get)
+          %li.divider
           %li
             = link_to('Logout', destroy_user_session_path, method: :delete)

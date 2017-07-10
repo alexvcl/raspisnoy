@@ -35,6 +35,14 @@ gem 'simple_form'
 
 gem 'kaminari'
 
+gem 'carrierwave'
+
+gem 'carrierwave-processing'
+
+gem 'rmagick'
+
+gem 'remotipart'
+
 gem 'wicked'
 
 gem 'cocoon'

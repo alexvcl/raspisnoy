@@ -1,0 +1,5 @@
+= simple_form_for(player, url: player_path(player), method: :put, remote: true) do |f|
+  = f.input :name
+  .line.line-dashed.b-b.line-lg.pull-in
+  = f.input :avatar, as: :file
+  -#= f.input :remote_avatar_url, as: :string

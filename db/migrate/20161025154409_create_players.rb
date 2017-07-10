@@ -5,6 +5,7 @@ class CreatePlayers < ActiveRecord::Migration[5.0]
       t.belongs_to :game
 
       t.string :name, null: false, default: ''
+      t.string :avatar
 
       t.timestamps
     end

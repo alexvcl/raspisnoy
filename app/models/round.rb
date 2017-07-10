@@ -15,7 +15,7 @@ class Round < ApplicationRecord
 
   has_many :bids, -> { order(player_id: :asc) }, inverse_of: :round, dependent: :destroy
   has_many :scores, inverse_of: :round, dependent: :destroy
-  # has_many :players, through: :game
+  has_many :players, through: :game
 
   accepts_nested_attributes_for :bids
 

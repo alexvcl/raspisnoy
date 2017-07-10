@@ -3,7 +3,7 @@
   = render(partial: 'layouts/partials/head')
   %body
     %section.vbox
-      = render(partial: 'layouts/partials/navigation')
+      = render(partial: 'layouts/partials/navigation', locals: {user: current_user})
       %section
         %section.hbox.stretch
           %section#content

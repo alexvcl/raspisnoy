@@ -15,7 +15,12 @@ Rails.application.routes.draw do
     root            to: 'games#index'
   end
 
-  resources :players, only: [:index]
+  resources :users do
+    # get :players, on: :member
+    resources :players, only: [:index]
+  end
+  resources :players, only: [:edit, :update]
+  # resources :players, only: [:index]
   resources :games, only: [:index, :new, :create, :show, :current_round] do
     get :current_round, on: :member
     resources :wizard

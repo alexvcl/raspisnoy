@@ -1,1 +1,12 @@
-%p= player.name
+%section.panel
+  .panel-body
+    .thumb.pull-right.m-l.m-t-xs.avatar
+      -#= image_tag(player.avatar_url)
+      = image_tag(player.avatar.middle.url)
+    .clear
+      %a.text-black{:href => "#"}
+        = player.name
+      -#%small.block.text-muted= ['games', player.games.count].join(' ')
+      %small.block.text-muted 2,415 points / 225 successful tricks
+      = link_to('Edit', edit_player_path(player), class: 'btn btn-xs btn-warning m-t-xs',
+              data: {'lazy-modal': true, 'lazy-modal-title': 'Edit player profile'}, remote: true)

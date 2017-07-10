@@ -1,0 +1,13 @@
+<% if @player.errors.any? %>
+
+    lazyModal.getModalBody().find('form').replaceWith("<%= j(render({partial: 'players/partials/form',  locals: {player: @player}})) %>");
+    lazyModal.getModal().trigger("show.bs.modal");
+    Application.app.initializeAllPlugins();
+
+<% else %>
+
+    Turbolinks.visit('<%= user_players_path(current_user) %>');
+
+<% end %>
+
+Application.app.bindClasses();

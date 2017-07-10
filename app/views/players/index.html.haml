@@ -1,2 +1,3 @@
-= render({partial: 'players/partials/player', collection: @players}) || content_tag(:p) { 'No players yet ☹' }
--#-#todo create players link if no players
+.col-lg-6
+  = render({partial: 'players/partials/player', collection: @players}) || content_tag(:p) { 'No players yet ☹' }
+-#TODO kaminari
