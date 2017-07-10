@@ -1,12 +1,18 @@
 %section.panel.panel-default
   %section.panel-body
-    = simple_form_for(round, method: :put, url: set_tricks_game_round_path(round.game, round), wrapper: :horizontal_form_scale) do |r|
+    = simple_form_for(round, method: :put, url: set_tricks_game_round_path(round.game, round), html: {data: {'class-binder': 'FormScores'}}, wrapper: :horizontal_form_scale) do |r|
+      - if round.minimality? or round.golden?
+        = r.input :trump, include_blank: false, as: :chosen,
+                          collection: Round.trumps.keys.map, checked: Round.trumps[r.object.trump]
       = r.simple_fields_for :bids do |b|
         = b.association :player, as: :hidden
         .line.line-dashed.b-b.line-lg.pull-in
-        = b.input :trick, label: [b.object.player_name + "'s", 'score'].join(' ')
+        = b.input :trick, label: [b.object.player_name + "'s", 'trick'].join(' ')
+        - if round.common? or round.trumpless?
+          = r.input :jokers, label: ("&#127183;").html_safe, as: :checkbox, name: 'round[jokers][]', value: b.object.player_id
         - if round.dark?
           = b.input :dark_penalty, as: :checkbox, label: '☹'
+      .line.line-dashed.b-b.line-lg.pull-in
       .form-group
-        .col-sm-4.col-lg-offset-4
+        .col-sm-4.col-lg-offset-2
           = primary_button(r)

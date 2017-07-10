@@ -4,6 +4,14 @@
   color: black;
 }
 
+.text-red {
+  color: red;
+}
+
+.text-alice {
+  color: aliceblue;
+}
+
 p {
   font-size: 14px !important;
 }
@@ -22,10 +30,6 @@ input[type=password] {
 //  width: 80px !important;
 //  height: 35px !important;
 //}
-
-.text-red {
-  color: red;
-}
 
 .line_wrapper {
   display: table;

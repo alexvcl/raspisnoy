@@ -4,7 +4,7 @@ window.Application.Classes ||= {}
 class Application.Core
 
   start: ->
-#    NProgress.configure({'showSpinner': false})
+    NProgress.configure({'showSpinner': false})
 
     $(document).on 'turbolinks:load', =>
       @initializeAllPlugins()
@@ -23,6 +23,7 @@ class Application.Core
           $(el).addClass(className)
 
   initializeSelect2: ->
+    #todo via data attr?
     if location.pathname.includes?('players')
       $('.select2').select2(width: '60%')
     else

@@ -2,12 +2,14 @@ class CreateRounds < ActiveRecord::Migration[5.0]
   def change
     create_table :rounds do |t|
       t.belongs_to :game, index: true
+      t.belongs_to :dealer, index: true
 
       t.integer :status,       null: false, default: 0
       t.integer :format_type,  null: false, default: 0
       t.integer :trump,        null: false, default: 0
       t.integer :cards_served, null: false, default: 1
       t.integer :weight,       null: false, default: 0
+      t.integer :jokers,       null: false, default: [], array: true
 
       t.timestamps
     end

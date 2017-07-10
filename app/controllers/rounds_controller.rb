@@ -43,7 +43,7 @@ class RoundsController < LoggedUserController
     def round_params
       params.fetch(:round, {}).permit(
         :trump,
-        :jokers,
+        jokers: [],
         bids_attributes: [:ordered, :trick, :dark, :dark_penalty, :id, :player_id]
       )
     end

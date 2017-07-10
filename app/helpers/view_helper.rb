@@ -46,7 +46,15 @@ module ViewHelper
     content_tag(:span, round.translate_enum(:format_type), class: "badge bg-#{color}")
   end
 
+  def round_dealer(round)
+    return unless round.betting? or (round.in_progress? and (round.minimality? or round.golden?)) 
+
+    content_tag(:span, round.dealer.name, class: 'text-black')
+  end
+
   def trump_decorated(round)
+    return if round.betting?
+
     trump_color = (round.trump == '♥ heart' or round.trump == '♦ diamond') ? 'text-red' : ''
     safe_join([content_tag(:span, class: trump_color) { round.trump.split.first }, round.trump.split.last], ' ')
   end
@@ -58,14 +66,14 @@ module ViewHelper
   def players_bid(round, bid)
     bg_color = bid.dark ? 'bg-dark' : 'bg-primary'
     content_tag(:span, round.tricks_counted? ? [bid.trick, bid.ordered].join('/') : bid.ordered,
-                class: "badge #{bg_color}") #.text-black
+                class: "badge #{bg_color} text-alice ")
   end
 
   def show_winner(game)
     winner = game.who_is_the_winner
     return unless winner
 
-    ['Winner:', [winner.name, 'with', game.score_by(winner), 'points'].join(' ')]
+    ['Winner:', [winner.name, 'with', game.score_by(winner), 'points'].join(' ')].join(' ')
     # content_tag(:h3) do
     #   safe_join(['Winner:', [winner.name, 'with', game.score_by(winner), 'points'].join(' ')], ' ')
     # end

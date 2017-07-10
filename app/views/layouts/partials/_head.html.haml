@@ -1,7 +1,5 @@
 %head
-
   %meta{charset: 'utf-8'}
-
   -#= favicon_link_tag
 
   - if content_for? :stylesheet
@@ -13,5 +11,6 @@
     = yield :js
   - else
     = javascript_include_tag('application', 'data-turbolinks-track': true)
+  %script{:src => "https://maps.googleapis.com/maps/api/js?key=AIzaSyDRxK4gd3kfn40k75VOLddhWir-Zj4-Rps&libraries=drawing", :type => "text/javascript"}
 
   = csrf_meta_tags

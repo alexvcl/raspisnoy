@@ -3,8 +3,8 @@ class Bid < ApplicationRecord
   attr_accessor :dark_penalty
 
   # belongs_to :game
-  belongs_to :player
-  belongs_to :round
+  belongs_to :player, inverse_of: :bids
+  belongs_to :round,  inverse_of: :bids
 
   scope :successful_tricks_by_player, -> (game, player) {
     joins(:round).where({
@@ -17,19 +17,22 @@ class Bid < ApplicationRecord
     .where(%q{trick = ordered}).count
   }
 
-  delegate :name, to: :player, allow_nil: true, prefix: true
+  delegate :name,    to: :player, allow_nil: true, prefix: true
+  delegate :setting, to: :game, allow_nil: true, prefix: true
 
-  # validates :player,
-  #           :round,
-  #           presence: true
+  validates :player,
+            :round,
+            presence: true
 
-  after_create :force_dark, if: 'round.dark?'
+  after_create :force_darkness #, if: 'round.dark?'
 
   def calculate_score
-    return nil unless round.tricks_counted?
+    # return nil unless round.tricks_counted?
 
     if fold?
-      return round.fold_reward if trick == 0
+      if trick == 0
+        return dark? ? round.fold_reward * 2 : round.fold_reward
+      end
       return trick * round.over_defence_reward if trick > 0
     end
 
@@ -50,7 +53,7 @@ class Bid < ApplicationRecord
 
   def add_dark_penalty(points)
     return points unless round.dark_for?(player)
-    points - round.dark_penalty
+    points - round.game_setting.dark_penalty
   end
 
   private
@@ -79,20 +82,24 @@ class Bid < ApplicationRecord
       elsif trick > ordered
         trick * round.over_defence_reward
       end
+      
       dark_penalty.present? ? add_dark_penalty(points): points
     end
 
     def minimality_points_distribution
-      #todo special rule
-      trick * round.trick_reward
+      if round.bids.pluck(:trick).include?(9)
+        trick == 9 ? 100 : -100
+      else
+        trick * round.trick_reward
+      end
     end
 
     def golden_points_distribution
       trick * round.trick_reward
     end
 
-    def force_dark
-      update_column(:dark, true)
+    def force_darkness
+      update_column(:dark, true) if round.dark?
     end
 
 end

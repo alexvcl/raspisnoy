@@ -16,14 +16,14 @@
             = format_colored(@round)
             Format
           .list-group-item
-            %span.badge.text-black= trump_decorated(@round)
-            Trump
+            %span.badge.text-black= (round.betting? or (round.in_progress? and (round.minimality? or round.golden?))) ? round_dealer(@round) : trump_decorated(@round)
+            = (round.betting? or (round.in_progress? and (round.minimality? or round.golden?))) ? 'Dealer' : 'Trump'
     .col-lg-6
       .panel.panel-default
         .list-group.no-radius.alt
           - if round.bids.map(&:persisted?).any?
             - round.bids.each do |bid|
-              .list-group-item
+              .list-group-item{class: "#{@game.current_round.dealer == bid.player ? 'text-black' : ''}"}
                 = players_bid(round, bid)
                 = bid.player.name
           - else
